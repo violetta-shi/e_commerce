@@ -1,0 +1,118 @@
+*{
+    font-family: Oswald;
+}
+html {
+    background-image: url('../../img/background.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+a{
+    color: black;
+    text-decoration: none;
+}
+
+article{
+    background-color: #FFFFFF;
+    border-radius: 25px;
+    max-width: 1180px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.but{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+}
+
+.butt{
+   background-color:#DADADA;
+   border-radius: 10px;
+    width: 180px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s linear;
+}
+
+.butt:hover{
+    background-color: #F76531;
+}
+
+.food-item img{
+    width: 331px;
+    height: 250px;
+}
+
+.food-item p{
+    font-size: 18px;
+    margin-top: 4px;
+}
+
+.price-w{
+    width: 331px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: -24px;
+}
+
+.price{
+   display: flex;
+    margin-top: 4px;
+}
+
+.width{
+    font-size: 17px;
+    color: #B3B3B3;
+}
+
+.basket{
+    width: 331px;
+    height: 59px;
+    border-radius: 10px;
+    border-color: #F76531;
+    background-color: white;
+    color: #F76531;
+    font-size: 18px;
+    margin-top: -4px;
+    margin-bottom: 32px;
+}
+
+.food{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.space{
+    margin-left: 36px;
+    margin-right: 36px;
+}
+
+.image {
+    display: inline-block; /* Строчно-блочный элемент */
+    overflow: hidden; /* Скрываем всё за контуром */
+}
+.image img {
+    transition: 5s; /* Время эффекта */
+    display: block; /* Убираем небольшой отступ снизу */
+}
+.image img:hover {
+    transform: scale(1.2); /* Увеличиваем масштаб */
+}
+
+.info{
+    color: #666666;
+    font-family: 'PT Sans', sans-serif;
+}

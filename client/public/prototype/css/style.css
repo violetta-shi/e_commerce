@@ -1,0 +1,188 @@
+:root {
+    --bs-body-font-family: Oswald;
+    --orange: #6A0DAD;
+    --orange-gray: #5B2E91;
+    --orange-dark: #4B007F;
+    --gray: #dadada;
+    --gray-light: #f5f5f5;
+    --gray-dark: #939393;
+    --bs-gradient: linear-gradient(to top, #000, transparent);
+}
+
+body {
+    background-image: url('../../img/new_back.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.mobile-icon {
+    width: 10px;
+    height: 10px;
+}
+
+.nav-orange {
+    --bs-nav-link-padding-y: 0.4rem;
+    --bs-nav-link-padding-x: 0rem;
+    --bs-nav-link-color: #000;
+    --bs-nav-link-hover-color: var(--orange);
+}
+
+.nav-orange .nav-link.active {
+    color: var(--orange);
+}
+
+.navbar-icon {
+    width: 34px;
+    height: 34px;
+}
+
+.fs-large {
+    font-size: 3rem;
+}
+
+.fs-5-5 {
+    font-size: 1.125rem;
+}
+
+.btn-orange {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--orange);
+    --bs-btn-border-color: var(--orange);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--orange-gray);
+    --bs-btn-hover-border-color: var(--orange-gray);
+    --bs-btn-focus-shadow-rgb: 217, 164, 6;
+    --bs-btn-active-color: #000;
+    --bs-btn-active-bg: var(--orange);
+    --bs-btn-active-border-color: var(--orange);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: var(--bs-gray-200);
+    --bs-btn-disabled-bg: var(--orange-dark);
+    --bs-btn-disabled-border-color: var(--orange-dark);
+}
+
+.btn-outline-orange {
+    --bs-btn-color: var(--orange);
+    --bs-btn-border-color: var(--orange);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--orange);
+    --bs-btn-hover-border-color: var(--orange);
+    --bs-btn-focus-shadow-rgb: 13, 110, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--orange);
+    --bs-btn-active-border-color: var(--orange);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #000;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: var(--orange-dark);
+    --bs-gradient: none;
+}
+
+.btn-gray-orange {
+    --bs-btn-color: #000;
+    --bs-btn-bg: var(--gray);
+    --bs-btn-border-color: var(--gray);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--orange);
+    --bs-btn-hover-border-color: var(--orange);
+    --bs-btn-focus-shadow-rgb: 217, 164, 6;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--orange);
+    --bs-btn-active-border-color: var(--orange);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #000;
+    --bs-btn-disabled-bg: var(--gray-dark);
+    --bs-btn-disabled-border-color: var(--gray-dark);
+    --bs-nav-link-color: #000;
+    --bs-nav-link-hover-color: #fff;
+}
+
+.btn-extra-lg {
+    --bs-btn-padding-y: 0.8rem;
+    --bs-btn-padding-x: 2rem;
+}
+
+.btn-p0 {
+    --bs-btn-padding-x: 0;
+    --bs-btn-padding-y: 0;
+}
+
+.text-light-dark {
+    color: var(--bs-gray-500);
+}
+
+.text-orange {
+    color: var(--orange);
+}
+
+.scale-transition {
+    transition: 5s;
+}
+.scale-transition:hover {
+    transform: scale(1.2);
+}
+
+.card-y-padding {
+    --bs-card-spacer-x: 0;
+    --bs-card-spacer-y: 0.3rem;
+}
+
+.card-no-padding {
+    --bs-card-img-overlay-padding: 0;
+}
+
+.btn .badge.top-25 {
+    top: 25%;
+}
+
+.form-orange.form-control:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: var(--orange);
+    outline: 0;
+    box-shadow: 0 0 0.25rem 0.25rem rgba(247, 101, 49, 0.25);
+}
+.form-orange.form-select:focus {
+    border-color: var(--orange);
+    outline: 0;
+    box-shadow: 0 0 0.25rem 0.25rem rgba(247, 101, 49, 0.25);
+}
+
+.form-floating > .form-orange.form-control:focus ~ label,
+/*.form-floating > .form-orange.form-control:not(:placeholder-shown) ~ label,*/
+.form-floating > .form-orange.form-control-plaintext ~ label/*,
+.form-floating > .form-orange.form-select ~ label*/ {
+    color: var(--orange-gray);
+    opacity: 0.8;
+}
+
+.bg-gray-light {
+    background-color: var(--gray-light);
+}
+
+.btn-p0.dropdown-toggle:after {
+    margin-left: 0;
+}
+
+.dropdown-menu {
+    --bs-dropdown-link-active-bg: var(--orange);
+}
+
+.info {
+    color: #666666;
+    font-family: 'PT Sans', sans-serif;
+}
+
+.hover-purple:hover {
+    background-color: var(--orange) !important;
+    color: white !important;
+}
+
+.hover-purple:hover span {
+    color: white !important;
+}

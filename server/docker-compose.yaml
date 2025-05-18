@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  db:
+    image: mysql:8.0.32
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'project'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'root_password'
+      LANG: 'C.UTF-8'
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./database/1_schema_init.sql:/docker-entrypoint-initdb.d/1.sql
+      - ./database/2_data_init.sql:/docker-entrypoint-initdb.d/2.sql
+#      - my-db:/var/lib/mysql
+#volumes:
+#  my-db:

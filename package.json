@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "clickcache": "^3.0.6",
+    "clickhouse-ts": "^2.1.0"
+  }
+}

@@ -1,0 +1,110 @@
+header {
+    max-width: 1350px;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    color: white;
+}
+
+.container{
+    display: flex;
+    justify-content: space-between;
+    margin: 12px 200px 78px 150px;
+    align-items: center;
+    font-size: 40px;
+}
+
+.icon-number{
+    display: flex;
+    flex-direction: column;
+}
+
+.icon-number img{
+    width: 10px;
+    height: 10px;
+}
+
+.number{
+    display: flex;
+    align-items: center;
+}
+
+.logo{
+    font-size: 16px;
+}
+
+.icons img{
+    width: 36px;
+    height: 36px;
+}
+
+.first{
+    font-size: 46px;
+    text-align: center;
+}
+
+.container-1{
+    margin: -40px auto 52px auto;
+    background-color: #FFFFFF;
+    border-radius: 15px;
+}
+.sale{
+    font-size: 46px;
+    color: #F76531;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    width: 741px;
+    height: 132px;
+}
+
+.details-1{
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 60px;
+}
+
+.details{
+    background-color: #F76531;
+    width: 150px;
+    height: 56px;
+    color: white;
+    border-radius: 12px;
+    border: 1px;
+    font-size: 16px;
+    transition: background-color 200ms linear;
+}
+
+.details:hover{
+    background-color: #c63;
+}
+
+.navigation{
+margin-left: auto;
+    margin-right: auto;
+}
+
+nav{
+    width: 1190px;
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    border: 13px solid #FFFFFF;
+    border-radius: 15px;
+    z-index: 2;
+    color: black;
+}
+
+.nav-item{
+    transition: color 0.3s linear;
+}
+
+.nav-item:hover{
+    color: #f77331
+}
+
+header img{
+    width: 50px;
+}

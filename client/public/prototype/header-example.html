@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Header</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap-icons/font/bootstrap-icons.css"/>
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.css"/>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans&display=swap" rel="stylesheet">
+    <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+</head>
+<body>
+<div class="container">
+    <!--Пример header с корзиной, в которой что-то есть и пользователем, который выполнил вход-->
+    <header class="hstack navbar text-white">
+        <div class="d-flex align-items-center fs-1 p-0">
+            <div class="vstack align-self-auto">
+                <img src="../img/мтс.png" alt="Мтс" class="mobile-icon">
+                <img src="../img/a1.png" alt="А1" class="mobile-icon">
+                <img src="../img/life.png" alt="Life" style="width: 7px; height: 12px">
+            </div>
+            <p class="m-0">7788</p>
+        </div>
+        <div class="text-center">
+            <p class="m-0">Доставка</p>
+            <p class="m-0">японской еды</p>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-link btn-p0 position-relative">
+                <span class="bi-bucket fs-large text-white"></span>
+                <span class="position-absolute top-25 start-100 translate-middle badge rounded-pill bg-danger">4</span>
+            </button>
+            <div class="btn-group">
+                <button class="btn btn-link btn-p0" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="bi-person-fill fs-large text-white dropdown-toggle"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Заказы</a></li>
+                    <li><a class="dropdown-item" href="#">Что-нибудь ещё</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Выйти</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+</div>
+</body>
+</html>
