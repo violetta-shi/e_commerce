@@ -1,4 +1,4 @@
-const { transactional } = require('../persistence/mysql');
+const { transactional, pool } = require('../persistence/mysql');
 
 const createOrder = async (order, creatorId) => transactional(async (connection) => {
     const { city, street, building, housing, flat, entrance, code, floor } = order.address;
@@ -18,6 +18,22 @@ const createOrder = async (order, creatorId) => transactional(async (connection)
     await connection.query(`INSERT INTO order_item (order_id, product_id, amount) VALUES ?`, [args]);
 });
 
+async function getAllOrders() {
+  console.log('getAllOrders function called');
+  try {
+    const [rows, fields] = await pool.query(
+      'SELECT o.*, a.city, a.street, a.building, a.housing, a.flat, a.entrance, a.code, a.floor FROM `order` o JOIN address a ON o.delivery_address_id = a.id'
+    );
+    console.log('Database query result (rows):', rows);
+    console.log('All orders:', rows);
+    return rows; // Or process the data as needed
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    throw error; // Handle the error appropriately
+  }
+}
+
 module.exports = {
     createOrder,
+    getAllOrders,
 };
