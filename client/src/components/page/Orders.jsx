@@ -19,8 +19,12 @@ const TransactionTable = () => {
     const [filterMaxAmount, setFilterMaxAmount] = useState('');
 
     // State for payment method dropdown filter
-    const [filterPaymentMethod, setFilterPaymentMethod] = useState(''); // Changed to empty string for 'All'
+    const [filterPaymentMethod, setFilterPaymentMethod] = useState([]); // Changed to array for multiple selection
     const [uniquePaymentMethods, setUniquePaymentMethods] = useState([]); // State to hold unique payment methods
+
+    // State for sorting
+    const [sortColumn, setSortColumn] = useState(null);
+    const [sortDirection, setSortDirection] = useState('asc');
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -71,8 +75,8 @@ const TransactionTable = () => {
         const isBelowMaxAmount = maxAmount === null || (amount <= maxAmount);
         const amountMatch = isAboveMinAmount && isBelowMaxAmount;
 
-        // Payment Method filter (dropdown)
-        const paymentMethodMatch = !filterPaymentMethod || (order.payment_method === filterPaymentMethod);
+        // Payment Method filter (multiple selection)
+        const paymentMethodMatch = filterPaymentMethod.length === 0 || filterPaymentMethod.includes(order.payment_method);
 
         // Address filter requires reconstructing the address string
         const fullAddress = `${order.city || ''}, ${order.street || ''}, ${order.building || ''}` +
@@ -86,6 +90,45 @@ const TransactionTable = () => {
         // Combine all filter conditions
         return isAfterStartDate && isBeforeEndDate && idMatch && amountMatch && paymentMethodMatch && addressMatch;
     });
+
+    // Sorting logic
+    const sortedOrders = [...filteredOrders].sort((a, b) => {
+        const aValue = a[sortColumn];
+        const bValue = b[sortColumn];
+
+        if (sortColumn === 'delivery_timestamp') {
+            const dateA = new Date(aValue);
+            const dateB = new Date(bValue);
+            if (sortDirection === 'asc') return dateA - dateB;
+            return dateB - dateA;
+        } else if (sortColumn === 'total_price') {
+             const amountA = parseFloat(aValue);
+             const amountB = parseFloat(bValue);
+             if (sortDirection === 'asc') return amountA - amountB;
+             return amountB - amountA;
+        }
+
+        // Default sorting for other types (if needed later)
+        if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+        if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+        return 0;
+    });
+
+    const handleSort = (column) => {
+        if (sortColumn === column) {
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortColumn(column);
+            setSortDirection('asc');
+        }
+    };
+
+    const renderSortArrow = (column) => {
+        if (sortColumn === column) {
+            return sortDirection === 'asc' ? ' ↑' : ' ↓';
+        }
+        return '';
+    };
 
     if (loading) {
         return <MainContainer><div>Loading orders...</div></MainContainer>;
@@ -166,10 +209,21 @@ const TransactionTable = () => {
                         <select
                             id="paymentMethodFilter"
                             value={filterPaymentMethod}
-                            onChange={(e) => setFilterPaymentMethod(e.target.value)}
+                            onChange={(e) => {
+                                const options = e.target.options;
+                                const value = [];
+                                for (let i = 0; i < options.length; i++) {
+                                  if (options[i].selected) {
+                                    value.push(options[i].value);
+                                  }
+                                }
+                                setFilterPaymentMethod(value);
+                              }}
                             className="form-select"
+                            multiple={true} // Enable multiple selection
+                            size={uniquePaymentMethods.length > 0 ? uniquePaymentMethods.length + 1 : 2} // Adjust size based on number of options
                         >
-                            <option value="">Все</option> {/* Option to show all */}
+                            <option value="">Все</option>
                             {uniquePaymentMethods.map(method => (
                                 <option key={method} value={method}>{method}</option>
                             ))}
@@ -194,20 +248,20 @@ const TransactionTable = () => {
                 <thead>
                     <tr>
                         <th>ID клиента</th>
-                        <th>Дата заказа</th>
-                        <th>Дата доставки</th>
-                        <th>Сумма</th>
+                        <th onClick={() => handleSort('delivery_timestamp')} style={{cursor: 'pointer'}}>Дата заказа{renderSortArrow('delivery_timestamp')}</th>
+                        <th onClick={() => handleSort('delivery_timestamp')} style={{cursor: 'pointer'}}>Дата доставки{renderSortArrow('delivery_timestamp')}</th>
+                        <th onClick={() => handleSort('total_price')} style={{cursor: 'pointer'}}>Сумма{renderSortArrow('total_price')}</th>
                         <th>Способ оплаты</th>
                         <th>Полный адрес</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {filteredOrders.length === 0 ? (
+                    {sortedOrders.length === 0 ? (
                         <tr>
                             <td colSpan="6">Нет заказов, соответствующих фильтру.</td>
                         </tr>
                     ) : (
-                        filteredOrders.map((order, index) => (
+                        sortedOrders.map((order, index) => (
                             <tr key={index}>
                                 <td>{order.id}</td>
                                 <td>{new Date(order.delivery_timestamp).toLocaleDateString()}</td>

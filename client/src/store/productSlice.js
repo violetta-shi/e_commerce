@@ -12,7 +12,10 @@ const groupBy = (arr, key) => {
 const initialState = {
     isLoading: false,
     isCreating: false,
+    isUpdating: false,
+    isDeleting: false,
     products: {},
+    allProducts: [],
     statistics: undefined,
     error: null,
 }
@@ -30,6 +33,14 @@ export const getProducts = createAsyncThunk(
             const { products } = productsStateSelector(getState());
             return products[categoryId] === undefined;
         }
+    }
+);
+
+export const fetchAllProducts = createAsyncThunk(
+    "products/fetchAllProducts",
+    async () => {
+        const response = await client.get(`/api/v1/products`, authorizationHeader());
+        return { status: response.status, data: response.data };
     }
 );
 
@@ -54,6 +65,22 @@ export const createProduct = createAsyncThunk(
     }
 );
 
+export const updateProduct = createAsyncThunk(
+    "products/updateProduct",
+    async ({ id, data }) => {
+        const response = await client.put(`/api/v1/products/${id}`, data, authorizationHeader());
+        return { id, status: response.status, data: response.data };
+    }
+);
+
+export const deleteProduct = createAsyncThunk(
+    "products/deleteProduct",
+    async (id) => {
+        const response = await client.delete(`/api/v1/products/${id}`, authorizationHeader());
+        return { id, status: response.status };
+    }
+);
+
 export const productsSlice = createSlice({
     name: "products",
     initialState,
@@ -73,10 +100,26 @@ export const productsSlice = createSlice({
                 if (status === 200) {
                     state.products[categoryId] = groupBy(data, "grouping_key");
                 } else {
-                    state.error = 'Произошла ошибка, попробуйте позже.'
+                    state.error = data?.message || 'Произошла ошибка, попробуйте позже.'
                 }
                 state.isLoading = false;
             })
+            .addCase(fetchAllProducts.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(fetchAllProducts.fulfilled, (state, action) => {
+                 const { status, data } = action.payload;
+                if (status === 200) {
+                    state.allProducts = data;
+                } else {
+                    state.error = data?.message || 'Произошла ошибка при загрузке товаров.'
+                }
+                state.isLoading = false;
+            })
+             .addCase(fetchAllProducts.rejected, (state, action) => {
+                 state.isLoading = false;
+                 state.error = action.error.message || 'Произошла ошибка при загрузке товаров.'
+             })
             .addCase(getProductStatistics.pending, (state) => {
                 state.statistics = undefined;
             })
@@ -85,7 +128,7 @@ export const productsSlice = createSlice({
                 if (status === 200) {
                     state.statistics = data;
                 } else {
-                    state.error = 'Произошла ошибка, попробуйте позже.'
+                    state.error = data?.message || 'Произошла ошибка, попробуйте позже.'
                 }
             })
             .addCase(createProduct.pending, (state) => {
@@ -98,6 +141,41 @@ export const productsSlice = createSlice({
                 }
                 state.isCreating = false;
             })
+            .addCase(updateProduct.pending, (state) => {
+                 state.isUpdating = true;
+            })
+            .addCase(updateProduct.fulfilled, (state, action) => {
+                const { id, status, data } = action.payload;
+                 if (status === 200) {
+                    const index = state.allProducts.findIndex(product => product.id === id);
+                     if (index !== -1) {
+                         state.allProducts[index] = { ...state.allProducts[index], ...data };
+                     }
+                 } else {
+                     state.error = data?.message || 'Произошла ошибка при обновлении товара.'
+                 }
+                 state.isUpdating = false;
+            })
+            .addCase(updateProduct.rejected, (state, action) => {
+                 state.isUpdating = false;
+                 state.error = action.error.message || 'Произошла ошибка при обновлении товара.'
+            })
+            .addCase(deleteProduct.pending, (state) => {
+                 state.isDeleting = true;
+            })
+            .addCase(deleteProduct.fulfilled, (state, action) => {
+                const { id, status } = action.payload;
+                 if (status === 200) {
+                    state.allProducts = state.allProducts.filter(product => product.id !== id);
+                 } else {
+                     state.error = action.payload.data?.message || 'Произошла ошибка при удалении товара.'
+                 }
+                 state.isDeleting = false;
+            })
+            .addCase(deleteProduct.rejected, (state, action) => {
+                 state.isDeleting = false;
+                 state.error = action.error.message || 'Произошла ошибка при удалении товара.'
+            });
     }
 });
 

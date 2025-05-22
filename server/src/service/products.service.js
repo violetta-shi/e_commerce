@@ -20,6 +20,72 @@ const findAllByCategoryId = async (categoryId) => {
     return products;
 };
 
+const findAll = async () => {
+    const [products, ] = await pool.query(`
+        SELECT 
+            p.id, 
+            p.grouping_key, 
+            p.category_id,
+            p.supplier_id,
+            p.name, 
+            p.image_url, 
+            p.size, 
+            p.price, 
+            p.weight,
+            s.company_name as supplier_name
+        FROM product p
+        LEFT JOIN supplier s ON p.supplier_id = s.supplier_id`);
+    return products;
+};
+
+const findById = async (productId) => {
+    const [products, ] = await pool.query(`
+        SELECT 
+            p.id, 
+            p.grouping_key, 
+            p.category_id,
+            p.supplier_id,
+            p.name, 
+            p.image_url, 
+            p.size, 
+            p.price, 
+            p.weight,
+            s.company_name as supplier_name
+        FROM product p
+        LEFT JOIN supplier s ON p.supplier_id = s.supplier_id
+        WHERE p.id = ?`, [productId]);
+    return products[0]; // Return the first product found (or undefined)
+};
+
+const updateProduct = async (productId, productData) => transactional(async (connection) => {
+    // Assuming productData contains the fields to update (name, price, etc.)
+    console.log('Backend received update request for product ID:', productId);
+    console.log('Backend received product data:', productData);
+    const { category_id, supplier_id, name, image_url, size, price, weight } = productData; // Only extract fields used in the UPDATE query
+    try {
+        const [result] = await connection.execute(
+            `UPDATE product SET
+                category_id = ?,
+                supplier_id = ?,
+                name = ?,
+                image_url = ?,
+                size = ?,
+                price = ?,
+                weight = ?
+             WHERE id = ?`,
+            [category_id, supplier_id, name, image_url, size, price, weight, productId] // Provide only the values corresponding to the placeholders
+        );
+        console.log('Database update result:', result);
+    } catch (error) {
+        console.error('Error during database update:', error);
+        throw error; // Re-throw the error to potentially be caught by the transactional wrapper
+    }
+});
+
+const deleteProduct = async (productId) => transactional(async (connection) => {
+    await connection.execute(`DELETE FROM product WHERE id = ?`, [productId]);
+});
+
 const getProductStatistics = async (start, end) => {
     const [orderCountStatistic, ] = await pool.query(`
         SELECT DATE_FORMAT(o.created_at, '%Y-%m') AS date, COUNT(*) AS count
@@ -84,6 +150,10 @@ const createProduct = async (product) => transactional(async (connection) => {
 
 module.exports = {
     findAllByCategoryId,
+    findAll,
+    findById,
+    updateProduct,
+    deleteProduct,
     getProductStatistics,
     createProduct,
 };
