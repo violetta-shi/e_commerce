@@ -26,7 +26,9 @@ export const getProducts = createAsyncThunk(
     "products/getProducts",
     async (categoryId) => {
         const response = await client.get(`/api/v1/categories/${categoryId}/products`, authorizationHeader());
+        
         return { categoryId, status: response.status, data: response.data };
+
     },
     {
         condition: (categoryId, { getState }) => {
@@ -49,6 +51,7 @@ export const getProductStatistics = createAsyncThunk(
     async ({start, end}) => {
         const response = await client.get(`/api/v1/products/statistics?startMonth=${start}&endMonth=${end}`,
             authorizationHeader());
+            console.log("GET PRODUCTS", response);
         return { status: response.status, data: response.data };
     }
 );

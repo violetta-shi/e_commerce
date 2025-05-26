@@ -87,6 +87,7 @@ const deleteProduct = async (productId) => transactional(async (connection) => {
 });
 
 const getProductStatistics = async (start, end) => {
+    console.log('Received start:', start);
     const [orderCountStatistic, ] = await pool.query(`
         SELECT DATE_FORMAT(o.created_at, '%Y-%m') AS date, COUNT(*) AS count
         FROM \`order\` o

@@ -8,7 +8,7 @@ import {authStateSelector} from "../../store/authSlice";
 import {categoriesStateSelector, getCategories} from "../../store/categorySlice";
 import React, { useEffect, useState } from "react";
 import Loader from "../util/Loader";
-import {clearFetchedProducts, createProduct, productsStateSelector, fetchAllProducts, updateProduct} from "../../store/productSlice";
+import {clearFetchedProducts, createProduct, productsStateSelector, fetchAllProducts, updateProduct, deleteProduct} from "../../store/productSlice";
 
 export default function AppProduct() {
     const { isCreating, isLoading, allProducts, error } = useSelector(productsStateSelector);
@@ -92,6 +92,20 @@ export default function AppProduct() {
 
     const handleDeleteClick = async (productId) => {
         console.log('Deleting product:', productId);
+        const resultAction = await dispatch(deleteProduct(productId));
+
+        if (deleteProduct.fulfilled.match(resultAction)) {
+            dispatch(addNotification({
+                background: "text-bg-success",
+                title: "Товар удален"
+            }));
+        } else {
+            console.error('Failed to delete product:', resultAction.error);
+            dispatch(addNotification({
+                background: "text-bg-danger",
+                title: "Ошибка при удалении товара"
+            }));
+        }
     };
 
     if (isLoading && allProducts.length === 0) {
@@ -120,6 +134,7 @@ export default function AppProduct() {
                                 <th>Название</th>
                                 <th>Категория ID</th>
                                 <th>Поставщик ID</th>
+                                <th>Поставщик</th>
                                 <th>Изображение URL</th>
                                 <th>Размер</th>
                                 <th>Цена</th>
@@ -130,7 +145,7 @@ export default function AppProduct() {
                         <tbody>
                             {allProducts.length === 0 ? (
                                 <tr>
-                                    <td colSpan="9">Нет товаров в базе данных.</td>
+                                    <td colSpan="10">Нет товаров в базе данных.</td>
                                 </tr>
                             ) : (
                                 allProducts.map(product => (
@@ -139,6 +154,7 @@ export default function AppProduct() {
                                         <td>{product.name}</td>
                                         <td>{product.category_id}</td>
                                         <td>{product.supplier_id}</td>
+                                        <td>{product.supplier_name}</td>
                                         <td>{product.image_url}</td>
                                         <td>{product.size}</td>
                                         <td>{product.price} руб.</td>

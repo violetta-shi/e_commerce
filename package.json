@@ -1,6 +1,12 @@
 {
   "dependencies": {
     "clickcache": "^3.0.6",
-    "clickhouse-ts": "^2.1.0"
+    "clickhouse-ts": "^2.1.0",
+    "date-fns": "^4.1.0",
+    "leaflet": "^1.9.4",
+    "react-leaflet": "^5.0.0"
+  },
+  "devDependencies": {
+    "dependency-cruiser": "^16.10.2"
   }
 }

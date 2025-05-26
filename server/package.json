@@ -21,6 +21,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "dependency-cruiser": "^16.10.2",
     "nodemon": "^2.0.22"
   }
 }

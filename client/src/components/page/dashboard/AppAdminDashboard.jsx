@@ -22,11 +22,12 @@ export default function AppAdminDashboard() {
     useEffect(() => {
         const dateToStr = (date) => date.toISOString().substring(0, 7);
         const startDate = new Date();
-        startDate.setMonth(startDate.getMonth() - 6);
+        startDate.setMonth(startDate.getMonth() - 12);
         dispatch(getProductStatistics({ start: dateToStr(startDate), end: dateToStr(new Date()) }));
     }, []);
 
     if (!statistics) {
+        console.log(currentUser);
         return <Loader />;
     }
 

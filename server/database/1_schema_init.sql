@@ -42,12 +42,6 @@ CREATE TABLE IF NOT EXISTS `product` (
     `size` VARCHAR(256),
     `price` DECIMAL(10,2) NOT NULL,
     `weight` INTEGER NOT NULL,
-    `color` VARCHAR(64),
-    `material` VARCHAR(64),
-    `power` INTEGER,
-    `warranty_months` INTEGER,
-    `energy_class` VARCHAR(2),
-    `dimensions` VARCHAR(64),
     FOREIGN KEY (`category_id`) REFERENCES `category`(`id`),
     FOREIGN KEY (`supplier_id`) REFERENCES `supplier`(`supplier_id`)
 ) ENGINE = InnoDB;

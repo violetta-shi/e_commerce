@@ -14,12 +14,13 @@ import WebDashboard from "./components/page/dashboard/WebDashboard";
 import AppCompare from "./components/page/AppCompare";
 import About from "./components/About";
 import Contact from "./components/page/Contact";
-
+import Delivery from "./components/page/Delivery";
 export const router = createBrowserRouter(createRoutesFromElements(
     <Route element={<App/>}>
         <Route path="/" element={<AppMain/>}/>
         <Route path="/menu" element={<AppMenu/>}/>
         <Route path="/about" element={<About/>}/>
+        <Route path="/delivery" element={<Delivery/>}/>
         <Route path="/menu/:id" element={<AppCategoryMenu/>}/>
         <Route path="/order" element={<AppOrder/>}/>
         <Route path="/product" element={<AppProduct/>}/>

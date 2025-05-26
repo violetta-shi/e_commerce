@@ -14,7 +14,7 @@ const FunnelChart = () => {
     ],
     datasets: [
       {
-        label: "Конверсия шагов в корзине",
+        label: "Воронка конверсии покупок",
         data: [1775319, 1320750, 356030, 283105, 241667, 227769],
         backgroundColor: [
           "#6a5acd",
@@ -67,7 +67,7 @@ const FunnelChart = () => {
   return (
     <div style={{ width: "600px", margin: "20px auto" }}>
       <h3 style={{ textAlign: "left", color: "#333" }}>
-        Конверсия шагов в Корзине
+      Воронка конверсии покупок
       </h3>
       <Bar data={data} options={options} />
     </div>
