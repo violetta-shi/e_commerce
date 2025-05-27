@@ -36,7 +36,47 @@ const createCategory = async (req, res, next) => {
     }
 }
 
+const updateCategory = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        let image_url;
+        if (req.file) {
+            const errors = validateImageExtension(req.file.originalname);
+            if (errors) {
+                return res.status(400).json(errors);
+            }
+            image_url = await uploadToLocal('category', req.file.originalname, req.file.buffer);
+        }
+        let data = req.body;
+        if (typeof data === 'string') {
+            data = JSON.parse(data);
+        }
+        const updateData = {
+            ...data,
+        };
+        if (image_url) updateData.image_url = image_url;
+        await categoriesService.updateCategory(id, updateData);
+        res.status(200).end();
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
+
+const deleteCategory = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        await categoriesService.deleteCategory(id);
+        res.status(200).end();
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+};
+
 module.exports = {
     findAll,
     createCategory,
+    updateCategory,
+    deleteCategory,
 };

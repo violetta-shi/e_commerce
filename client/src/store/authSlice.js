@@ -4,8 +4,10 @@ import {authorizationHeader, clearAccessToken, storeAccessToken} from "./util/au
 
 const initialState = {
     isLoading: false,
+    isCreating: false,
     currentUser: undefined,
-    loginErrorMessage: null
+    loginErrorMessage: null,
+    registrationErrorMessage: null
 }
 
 export const authStateSelector = state => state.auth;
@@ -32,6 +34,22 @@ export const login = createAsyncThunk(
     }
 );
 
+export const registerUser = createAsyncThunk(
+    'auth/register',
+    async (body, { rejectWithValue }) => {
+        try {
+            const response = await client.post('/api/v1/auth/register', body);
+            if (response.status !== 201) {
+                console.log('Registration failed вдалтпдва:', response.data);
+                return rejectWithValue(response.data);
+            }
+            return { status: response.status, data: response.data };
+        } catch (error) {
+            return rejectWithValue(error.response?.data || { message: 'Произошла ошибка при регистрации' });
+        }
+    }
+);
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -42,6 +60,7 @@ export const authSlice = createSlice({
         },
         dismissErrorMessage: (state) => {
             state.loginErrorMessage = null;
+            state.registrationErrorMessage = null;
         }
     },
     extraReducers(builder) {
@@ -54,17 +73,40 @@ export const authSlice = createSlice({
             })
             .addCase(login.pending, (state, action) => {
                 state.isLoading = true;
+                state.loginErrorMessage = null;
             })
             .addCase(login.fulfilled, (state, action) => {
                 const { status, data } = action.payload;
                 if (status === 200) {
                     state.currentUser = data;
                     storeAccessToken(data.access_token);
+                    state.loginErrorMessage = null;
                 } else {
                     state.loginErrorMessage = data?.message || 'Не удалось выполнить логин';
                 }
                 state.isLoading = false;
             })
+            .addCase(login.rejected, (state, action) => {
+                state.isLoading = false;
+                state.loginErrorMessage = action.payload?.message || action.error.message || 'Не удалось выполнить логин';
+            })
+            .addCase(registerUser.pending, (state) => {
+                state.isCreating = true;
+                state.registrationErrorMessage = null;
+            })
+            .addCase(registerUser.fulfilled, (state, action) => {
+                const { status, data } = action.payload;
+                if (status === 201) {
+                    state.registrationErrorMessage = null;
+                } else {
+                    state.registrationErrorMessage = data?.message || 'Произошла ошибка при регистрации.';
+                }
+                state.isCreating = false;
+            })
+            .addCase(registerUser.rejected, (state, action) => {
+                state.isCreating = false;
+                state.registrationErrorMessage = action.payload?.message || action.error.message || 'Произошла ошибка при регистрации.';
+            });
     }
 });
 

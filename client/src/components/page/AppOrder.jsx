@@ -173,7 +173,7 @@ export default function AppOrder() {
                                                               required: "Обязательное поле",
                                                               pattern: {
                                                                   value: /\+375\d{9}/,
-                                                                  message: 'Неверный формат номера'
+                                                                  message: 'Введите в формате +375XXXXXXXXX'
                                                               }
                                                           })}/>
                                             <Form.Control.Feedback type="invalid">{phone_number?.message}</Form.Control.Feedback>

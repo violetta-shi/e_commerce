@@ -19,7 +19,36 @@ const createCategory = async (category) => transactional(async (connection) => {
     );
 });
 
+const updateCategory = async (id, category) => transactional(async (connection) => {
+    // Only update fields that are provided
+    const fields = [];
+    const values = [];
+    if (category.name !== undefined) {
+        fields.push('name = ?');
+        values.push(category.name);
+    }
+    if (category.image_url !== undefined) {
+        fields.push('image_url = ?');
+        values.push(category.image_url);
+    }
+    if (fields.length === 0) return; // nothing to update
+    values.push(id);
+    await connection.execute(
+        `UPDATE category SET ${fields.join(', ')} WHERE id = ?`,
+        values
+    );
+});
+
+const deleteCategory = async (id) => transactional(async (connection) => {
+    await connection.execute(
+        `DELETE FROM category WHERE id = ?`,
+        [id]
+    );
+});
+
 module.exports = {
     findAll,
-    createCategory
+    createCategory,
+    updateCategory,
+    deleteCategory
 };

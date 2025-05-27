@@ -85,7 +85,6 @@ const deleteProduct = async (req, res, next) => {
 };
 
 const getProductStatistics = async (req, res, next) => {
-    console.log('Received request for product statistics');
     const getDefaultStartDate = () => {
         const now = new Date();
         now.setMonth(now.getMonth() - 3);

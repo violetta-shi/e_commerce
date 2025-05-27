@@ -38,6 +38,28 @@ export const createCategory = createAsyncThunk(
 
 )
 
+export const updateCategory = createAsyncThunk(
+    "categories/updateCategory",
+    async ({ id, data }) => {
+        const { image, ...rest } = data;
+        const formData = new FormData();
+        if (image && image.length > 0) {
+            formData.append("image", image[0]);
+        }
+        formData.append("data", JSON.stringify(rest));
+        const response = await client.put(`/api/v1/categories/${id}`, formData, authorizationHeader());
+        return { id, status: response.status, data: response.data };
+    }
+);
+
+export const deleteCategory = createAsyncThunk(
+    "categories/deleteCategory",
+    async (id) => {
+        const response = await client.delete(`/api/v1/categories/${id}`, authorizationHeader());
+        return { id, status: response.status };
+    }
+);
+
 export const categoriesSlice = createSlice({
     name: "categories",
     initialState,
@@ -66,6 +88,43 @@ export const categoriesSlice = createSlice({
                 }
                 state.isCreating = false;
             })
+            .addCase(updateCategory.pending, (state) => {
+                state.isUpdating = true;
+            })
+            .addCase(updateCategory.fulfilled, (state, action) => {
+                const { id, status, data } = action.payload;
+                if (status === 200) {
+                    if (state.categories) {
+                        const idx = state.categories.findIndex(cat => cat.id === Number(id));
+                        if (idx !== -1) {
+                            state.categories[idx] = { ...state.categories[idx], ...data };
+                        }
+                    }
+                } else {
+                    state.error = data?.message || 'Ошибка при обновлении категории.'
+                }
+                state.isUpdating = false;
+            })
+            .addCase(updateCategory.rejected, (state, action) => {
+                state.isUpdating = false;
+                state.error = action.error.message || 'Ошибка при обновлении категории.'
+            })
+            .addCase(deleteCategory.pending, (state) => {
+                state.isDeleting = true;
+            })
+            .addCase(deleteCategory.fulfilled, (state, action) => {
+                const { id, status } = action.payload;
+                if (status === 200 && state.categories) {
+                    state.categories = state.categories.filter(cat => cat.id !== Number(id));
+                } else {
+                    state.error = action.payload.data?.message || 'Ошибка при удалении категории.'
+                }
+                state.isDeleting = false;
+            })
+            .addCase(deleteCategory.rejected, (state, action) => {
+                state.isDeleting = false;
+                state.error = action.error.message || 'Ошибка при удалении категории.'
+            });
     }
 });
 

@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import Loader from "../util/Loader";
 import {categoriesStateSelector, getCategories, createCategory, updateCategory, deleteCategory} from "../../store/categorySlice";
 
-export default function AppCategory() {
+export default function AppCategoryAdmin() {
     const { isLoading, isCreating, isUpdating, isDeleting, categories, error } = useSelector(categoriesStateSelector);
     const { currentUser } = useSelector(authStateSelector);
     const dispatch = useDispatch();
@@ -195,4 +195,4 @@ export default function AppCategory() {
             )}
         </MainContainer>
     );
-}
+} 

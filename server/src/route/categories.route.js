@@ -7,4 +7,9 @@ const {upload} = require("../middleware/multipartform.middleware");
 router.route('/')
     .get(categoriesController.findAll)
     .post(ensureAdminRole, upload.single('image'), categoriesController.createCategory);
+
+router.route('/:id')
+    .put(ensureAdminRole, upload.single('image'), categoriesController.updateCategory)
+    .delete(ensureAdminRole, categoriesController.deleteCategory);
+
 module.exports = router;
